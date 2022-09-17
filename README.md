@@ -15,6 +15,9 @@ if the user searched few words - all those timestamps will be returned to user
 - tracking of text can be done - for each frame - to reduce load on processing
 - for each time stamp the text can be found out
 - option to give frame skipping option to user is beneficial
+- showing range where the word was present, some words are constantly present
+- can highlight for each word by user where it was present
+- close to it, could also be added - to make suggestion to user
 
 Mini Goals
 - find best text detection model
