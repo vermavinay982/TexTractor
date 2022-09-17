@@ -1,6 +1,7 @@
 # TexTractor
 
 Goal: Trying to find the specific text in a video
+Motivation: While watching tutorial, need to find a specific word on screen, but had to watch the whole video. So thought to make it for the world.
 
 it will give the frame, or timestamp where the text was present
 
