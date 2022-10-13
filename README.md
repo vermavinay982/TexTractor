@@ -1,4 +1,4 @@
-# TexTractor
+# TexTractor - Video text searching utility
 
 Goal: Trying to find the specific text in a video
 Motivation: While watching tutorial, need to find a specific word on screen, but had to watch the whole video. So thought to make it for the world.
@@ -10,6 +10,13 @@ it will give the frame, or timestamp where the text was present
 for all words - timestamps will be generated 
 if the user searched few words - all those timestamps will be returned to user
 
+- Find all the text in complete video, mark red the low confidence text, and black with confident text
+- Allows you to find certain words, and get that slide created for you
+- If you need the last page where the word was written, you can get that too by going through all pages
+- Can summarize the whole video, and provide you the slides, super easy to read in emergency
+- Works on your laptop, so no issue of privacy
+
+## More Points
 - search all at once
 - search more 
 - getting range of video where text can be present - for faster search
