@@ -9,6 +9,10 @@ reader = easyocr.Reader(lang_list=['en'], gpu=True, model_storage_directory=None
 
 file = '../seminar.mp4'
 cap = cv2.VideoCapture(file)
+fps = cap.get(cv2.CAP_PROP_FPS)
+skip_count = fps
+# print(fps)
+# exit()
 
 SCALE = 1
 ctr = 0
@@ -21,7 +25,7 @@ while True:
     if ret is False: break
     # SAVING RESOUCES, REDUCING SEARCH TIME
     ctr+=1
-    skip = ctr%10
+    skip = ctr % skip_count
     if skip: continue
 
     h, w, c = frame.shape
