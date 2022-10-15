@@ -4,7 +4,7 @@ Goal: Trying to find the specific text in a video
 Motivation: While watching tutorial, need to find a specific word on screen, but had to watch the whole video. So thought to make it for the world.
 Benefits: faster inference on videos, better analytics, threading for performance, multi processing
 
-![Image](assets/gui_look.png)
+![Image](assets/gui_look.gif)
 ![Image](assets/Demo.gif)
 
 
