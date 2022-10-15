@@ -18,7 +18,7 @@ def extract_text(file, debug=False):
     ctr = 0
     op_ext = ".txt"
     op_base = "images/output"
-    op_file = f"{op_base}_{file.replace(' ','_')}{op_ext}"
+    op_file = f"{op_base}_{file.split('/')[-1][:-4].replace(' ','_')}{op_ext}"
     whole_text = ""
     
     while True:
@@ -74,7 +74,11 @@ def extract_text(file, debug=False):
         cap.release()
         cv2.destroyAllWindows()
 
-    return whole_text
+    with open(op_file,'w') as f:
+        f.write(whole_text)
+        print(f"Written at {op_file}")
+    
+    return op_file, whole_text 
 
 def find_text_video(file, search, start_ctr, debug=False):
     cap = cv2.VideoCapture(file)

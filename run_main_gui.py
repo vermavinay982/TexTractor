@@ -22,7 +22,7 @@ def browsefunc():
         filetypes=(("video files","*.mp4"),("All files","*.*")))
     e_file.insert(END, filename)
 
-def extract_text(debug=False):
+def search_text(debug=False):
     global ctr
 
     file = e_file.get()
@@ -31,6 +31,11 @@ def extract_text(debug=False):
     result_file, ctr = find_text(file, search, ctr, debug)
     callback(result_file)
     print(f"File:{file},Search:{search},Result:{result_file} at {ctr}" )
+
+def extract_text(debug=False):
+    file = e_file.get()
+    result_file, text = extract_video_text(file, debug)
+    print(f"File:{file},Result:{result_file} at {ctr}" )
 
 def callback(op_file=None):
     if op_file is None:
@@ -65,10 +70,10 @@ l_search.grid(row=1, column=0, sticky=W, padx=50)
 e_search = Entry(root, width=30)
 e_search.grid(row=1, column=1, sticky=E, padx=50)
 
-b_text = Button(root, text="Extract Text", command=show)
+b_text = Button(root, text="Extract Text", command=extract_text)
 b_text.grid(row = 3, column = 0, sticky = W,padx=50)
 
-b_find = Button(root, text="Find Text", command=extract_text)
+b_find = Button(root, text="Find Text", command=search_text)
 b_find.grid(row = 3, column = 1, sticky = W,padx=90)
 
 b_reset = Button(root, text="Reset",command=reset)
