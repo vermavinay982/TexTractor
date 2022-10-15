@@ -7,64 +7,69 @@ reader = easyocr.Reader(lang_list=['en'], gpu=True, model_storage_directory=None
                         detector=True, recognizer=True, verbose=True, 
                         quantize=True, cudnn_benchmark=False)
 
-file = '../seminar.mp4'
-cap = cv2.VideoCapture(file)
-fps = cap.get(cv2.CAP_PROP_FPS)
-skip_count = fps
-# print(fps)
-# exit()
 
-SCALE = 1
-ctr = 0
-prev_frame = None
-PCT_THRESH = 10
-TO_FIND = "noob"
 
-while True:
-    ret, frame = cap.read()
-    if ret is False: break
-    # SAVING RESOUCES, REDUCING SEARCH TIME
-    ctr+=1
-    skip = ctr % skip_count
-    if skip: continue
 
-    h, w, c = frame.shape
-    nw, nh = int(w/SCALE), int(h/SCALE)
-    # DONT RESIZE, IF NOT REQUIRED
-    if not SCALE==1:
-        frame = cv2.resize(frame, (nw, nh))
+def find_text_video(file, search):
+    cap = cv2.VideoCapture(file)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    skip_count = fps
+    PCT_THRESH = 10
+    prev_frame = None
+    SCALE = 1
+    ctr = 0
 
-    # FRAME DIFFERENCE TO SKIP OCR PROCESSING, SAVING RESOURCES
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    if prev_frame is None: prev_frame = gray
-    frame_diff = cv2.absdiff(gray, prev_frame)
-    cv2.imshow("frame diff",frame_diff)
-    total = sum(sum(frame_diff))
-    diff_pct = (total/(nw*nh))*100
-    prev_frame = gray
+    while True:
+        ret, frame = cap.read()
+        if ret is False: break
+        # SAVING RESOUCES, REDUCING SEARCH TIME
+        ctr+=1
+        skip = ctr % skip_count
+        if skip: continue
 
-    if diff_pct<PCT_THRESH:
-        # print(diff_pct,"%")
-        continue
+        h, w, c = frame.shape
+        nw, nh = int(w/SCALE), int(h/SCALE)
+        # DONT RESIZE, IF NOT REQUIRED
+        if not SCALE==1:
+            frame = cv2.resize(frame, (nw, nh))
 
-    # READING TEXT VALUES FROM IMAGE
-    detections = reader.readtext(frame)
-    text = ""
-    for det in detections:
-        line = det[1].lower()
-        text+=(line+" ")
-    print(text)
+        # FRAME DIFFERENCE TO SKIP OCR PROCESSING, SAVING RESOURCES
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        if prev_frame is None: prev_frame = gray
+        frame_diff = cv2.absdiff(gray, prev_frame)
+        cv2.imshow("frame diff",frame_diff)
+        total = sum(sum(frame_diff))
+        diff_pct = (total/(nw*nh))*100
+        prev_frame = gray
 
-    # FINDING REQUIRED TEXT, FROM DETECTED TEXT, AND SHOWING IMAGE 
-    if TO_FIND in text:
-        cv2.imshow("Found",frame)  
-        key = cv2.waitKey(0)        
+        if diff_pct<PCT_THRESH:
+            # print(diff_pct,"%")
+            continue
 
-    cv2.imshow("Player",frame)  
-    key = cv2.waitKey(1)
-    
-    if key==ord('q'):
-        break
+        # READING TEXT VALUES FROM IMAGE
+        detections = reader.readtext(frame)
+        text = ""
+        for det in detections:
+            line = det[1].lower()
+            text+=(line+" ")
+        print(text)
 
-cap.release()
-cv2.destroyAllWindows()
+        # FINDING REQUIRED TEXT, FROM DETECTED TEXT, AND SHOWING IMAGE 
+        if search in text:
+            cv2.imshow("Found",frame)  
+            key = cv2.waitKey(0)
+            cv2.imwrite("images/output.png",frame)        
+
+        cv2.imshow("Player",frame)  
+        key = cv2.waitKey(1)
+        
+        if key==ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__=="__main__":
+    file = '../seminar.mp4'
+    TO_FIND = "noob"
+    find_text_video(file, TO_FIND)
